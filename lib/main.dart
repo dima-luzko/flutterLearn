@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practice_app/counter_cubit.dart';
 import 'package:practice_app/screen/catalog.dart';
-import 'package:practice_app/widgets/button_widgets.dart';
-import 'package:practice_app/widgets/change_count_button_widget.dart';
-import 'package:practice_app/widgets/count_state_widget.dart';
-import 'package:practice_app/widgets/general_count_widget.dart';
-
-import 'constants/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,50 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const RootWidget());
-  }
-}
-
-class RootWidget extends StatefulWidget {
-  const RootWidget({super.key});
-
-  @override
-  State<RootWidget> createState() => _RootWidgetState();
-}
-
-class _RootWidgetState extends State<RootWidget> {
-  int count = 0;
-  int global = 10;
-
-  void addCounter() {
-    setState(() {
-      if (count != 10) {
-        count++;
-        global--;
-      }
-    });
-  }
-
-  void removeCounter() {
-    setState(() {
-      if (count > 0) {
-        count--;
-        global++;
-      }
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return CountState(
-        count: count,
-        global: global,
-        incrementer: addCounter,
-        decrementer: removeCounter,
-        child: const InheritedWidgetDemo());
+        home: BlocProvider(
+          create: (context) => CounterCubit(),
+          child: const InheritedWidgetDemo(),
+        ));
   }
 }
 

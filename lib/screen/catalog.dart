@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../constants/colors.dart';
 import '../widgets/button_widgets.dart';
 import '../widgets/change_count_button_widget.dart';
@@ -46,7 +45,7 @@ class TitleSection extends StatelessWidget {
               ),
               Column(
                 children: [
-                  ButtonSection(),
+                  const ButtonSection(),
                   Container(
                     margin: const EdgeInsets.only(top: 25.0),
                     child: Row(

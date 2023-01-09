@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
-import 'count_state_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../counter_cubit.dart';
 
 class GeneralCount extends StatelessWidget {
   const GeneralCount({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final counterState = CountState.of(context);
-    return Text(
-      '${counterState.global} шт.',
-      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-    );
+    return BlocBuilder<CounterCubit, Counters>(
+        builder: (context, count) => Text(
+              '${count.globalCount} шт.',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            ));
   }
 }
