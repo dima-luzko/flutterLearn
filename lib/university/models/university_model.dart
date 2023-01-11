@@ -3,17 +3,28 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'university_model.g.dart';
 
 @JsonSerializable()
-class University {
-  List<String> web_pages;
+class UniversityData {
+  @JsonKey(name: "web_pages")
+  List<String> webPages;
   String name;
   String country;
 
-  University(
-      {required this.web_pages,
-        required this.name,
-        required this.country,});
+  UniversityData(
+      {required this.webPages, required this.name, required this.country});
 
-  factory University.fromJson(Map<String, dynamic> json) => _$UniversityFromJson(json);
+  factory UniversityData.fromJson(Map<String, dynamic> json) =>
+      _$UniversityDataFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UniversityToJson(this);
+  Map<String, dynamic> toJson() => _$UniversityDataToJson(this);
+}
+
+class University {
+  List<UniversityData>? university;
+  String? error;
+
+  University({required this.university, required this.error});
+
+  University.withError(String errorMessage) {
+    error = errorMessage;
+  }
 }

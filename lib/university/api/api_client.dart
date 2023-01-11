@@ -10,7 +10,7 @@ abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
   @GET('/search')
-  Future<List<University>> getUniversityList();
+  Future<List<UniversityData>?> getUniversityList();
 }
 
 

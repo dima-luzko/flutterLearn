@@ -1,44 +1,108 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
-import '../university/api/api_client.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:practice_app/university/university_bloc.dart';
+import 'package:practice_app/university/university_event.dart';
+import 'package:practice_app/university/university_state.dart';
 import '../university/models/university_model.dart';
 
-class UniversityScreen extends StatelessWidget {
+class UniversityScreen extends StatefulWidget {
   const UniversityScreen({Key? key}) : super(key: key);
 
   @override
+  State<UniversityScreen> createState() => _UniversityScreenState();
+}
+
+class _UniversityScreenState extends State<UniversityScreen> {
+  final UniversityBloc _universityBloc = UniversityBloc();
+
+  @override
+  void initState() {
+    _universityBloc.add(GetUniversityList());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Dio dio = Dio();
-    dio.interceptors.add(PrettyDioLogger());
-    final client = ApiClient(dio);
-    return FutureBuilder<List<University>>(
-      future: client.getUniversityList(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          final List<University>? posts = snapshot.data;
-          return _buildListView(context, posts!);
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+    return BlocProvider(
+      create: (_) => _universityBloc,
+      // child: BlocListener<UniversityBloc, UniversityState>(
+      //   listener: (context, state) {
+      //     if (state is UniversityError) {
+      //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      //         content: Text(state.message!),
+      //       ));
+      //     }
+      //   },
+        child: BlocBuilder<UniversityBloc, UniversityState>(
+          builder: (context, state) {
+            if (state is UniversityInitial) {
+              return const LoaderWidget();
+            } else if (state is UniversityLoading) {
+              return const LoaderWidget();
+            } else if (state is UniversityLoaded) {
+              return UniversityListWidget(data: state.universityModel);
+            } else if (state is UniversityError) {
+              return Container();
+            } else {
+              return Container();
+            }
+          },
+        ),
+      // ),
     );
   }
 }
 
-Widget _buildListView(BuildContext context, List<University> posts) {
-  return ListView.builder(
-    itemBuilder: (context, index) {
-      return UniversityItem(
-          nameUniversity: posts[index].name,
-          country: posts[index].country,
-          webSite: posts[index].web_pages.first);
-    },
-    itemCount: posts.length,
-  );
+class LoaderWidget extends StatelessWidget {
+  const LoaderWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(child: CircularProgressIndicator());
+  }
+}
+
+class ErrorWidget extends StatelessWidget {
+  const ErrorWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+   return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(
+            Icons.error_outline,
+            color: Colors.red,
+            size: 50,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text('Something Went Wrong')
+        ],
+      ),
+    );
+  }
+}
+
+
+class UniversityListWidget extends StatelessWidget {
+  final List<UniversityData>? data;
+  const UniversityListWidget({Key? key, required this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        return UniversityItem(
+            nameUniversity: data![index].name,
+            country: data![index].country,
+            webSite: data![index].webPages.first);
+      },
+      itemCount: data!.length
+    );
+  }
 }
 
 class UniversityItem extends StatelessWidget {
