@@ -1,4 +1,3 @@
-import 'package:chucker_flutter/chucker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:practice_app/counter_cubit.dart';
@@ -36,7 +35,7 @@ class _InheritedWidgetDemo extends State<InheritedWidgetDemo> {
   int _selectedIndex = 0;
 
   final List<Widget> _widgets = [
-    const UniversityScreen(),
+    const UniversityScreenWidget(),
     const CatalogScreen(),
     const Text(
       "Продажи",

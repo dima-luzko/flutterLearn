@@ -1,57 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:practice_app/university/university_bloc.dart';
-import 'package:practice_app/university/university_event.dart';
-import 'package:practice_app/university/university_state.dart';
-import '../university/models/university_model.dart';
+import 'package:practice_app/new/bloc/university_bloc.dart';
 
-class UniversityScreen extends StatefulWidget {
-  const UniversityScreen({Key? key}) : super(key: key);
-
-  @override
-  State<UniversityScreen> createState() => _UniversityScreenState();
-}
-
-class _UniversityScreenState extends State<UniversityScreen> {
-  final UniversityBloc _universityBloc = UniversityBloc();
-
-  @override
-  void initState() {
-    _universityBloc.add(GetUniversityList());
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => _universityBloc,
-      // child: BlocListener<UniversityBloc, UniversityState>(
-      //   listener: (context, state) {
-      //     if (state is UniversityError) {
-      //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      //         content: Text(state.message!),
-      //       ));
-      //     }
-      //   },
-        child: BlocBuilder<UniversityBloc, UniversityState>(
-          builder: (context, state) {
-            if (state is UniversityInitial) {
-              return const LoaderWidget();
-            } else if (state is UniversityLoading) {
-              return const LoaderWidget();
-            } else if (state is UniversityLoaded) {
-              return UniversityListWidget(data: state.universityModel);
-            } else if (state is UniversityError) {
-              return Container();
-            } else {
-              return Container();
-            }
-          },
-        ),
-      // ),
-    );
-  }
-}
+import '../new/bloc/university_event.dart';
+import '../new/bloc/university_state.dart';
+import '../new/model/university_models.dart';
 
 class LoaderWidget extends StatelessWidget {
   const LoaderWidget({Key? key}) : super(key: key);
@@ -63,45 +16,47 @@ class LoaderWidget extends StatelessWidget {
 }
 
 class ErrorWidget extends StatelessWidget {
-  const ErrorWidget({Key? key}) : super(key: key);
+  final String message;
+
+  const ErrorWidget({Key? key, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-   return Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Icon(
+        children: [
+          const Icon(
             Icons.error_outline,
             color: Colors.red,
             size: 50,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          Text('Something Went Wrong')
+          Text(message)
         ],
       ),
     );
   }
 }
 
+class UniversityListViewWidget extends StatelessWidget {
+  final List<University>? data;
 
-class UniversityListWidget extends StatelessWidget {
-  final List<UniversityData>? data;
-  const UniversityListWidget({Key? key, required this.data}) : super(key: key);
+  const UniversityListViewWidget({Key? key, required this.data})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemBuilder: (context, index) {
-        return UniversityItem(
-            nameUniversity: data![index].name,
-            country: data![index].country,
-            webSite: data![index].webPages.first);
-      },
-      itemCount: data!.length
-    );
+        itemBuilder: (context, index) {
+          return UniversityItem(
+              nameUniversity: data![index].name,
+              country: data![index].country,
+              webSite: data![index].webPages.first);
+        },
+        itemCount: data!.length);
   }
 }
 
@@ -181,5 +136,62 @@ class UniversityItem extends StatelessWidget {
         ],
       ),
     ));
+  }
+}
+
+class UniversityScreenWidget extends StatefulWidget {
+  const UniversityScreenWidget({Key? key}) : super(key: key);
+
+  @override
+  State<UniversityScreenWidget> createState() => _UniversityScreenWidgetState();
+}
+
+class _UniversityScreenWidgetState extends State<UniversityScreenWidget> {
+  final UniversityBloc _universityBloc = UniversityBloc();
+
+  @override
+  void initState() {
+    _universityBloc.add(const UniversityEvent.loadUniversities());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => _universityBloc,
+      child: BlocBuilder<UniversityBloc, UniversityState>(
+        builder: (context, state) {
+          if (state is Loading) {
+            return const LoaderWidget();
+          } else if (state is Data) {
+            return UniversityListViewWidget(data: state.data);
+          } else if (state is Error) {
+            return ErrorWidget(message: state.message.toString());
+          } else {
+            return Container();
+          }
+        },
+      ),
+      // ),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  const SearchBar({Key? key}) : super(key: key);
+
+  //final Function filtered;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      onChanged: (value) {},
+      decoration: const InputDecoration(
+          labelText: "Search",
+          hintText: "Search",
+          prefixIcon: Icon(Icons.search),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+    );
   }
 }
