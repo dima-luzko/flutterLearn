@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:practice_app/new/bloc/university_bloc.dart';
 
 import '../new/bloc/university_event.dart';
 import '../new/bloc/university_state.dart';
-import '../new/model/university_models.dart';
 
 class LoaderWidget extends StatelessWidget {
   const LoaderWidget({Key? key}) : super(key: key);
@@ -12,6 +12,8 @@ class LoaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(child: CircularProgressIndicator());
+    //   return Center(child: Lottie.network(
+    //       'https://assets1.lottiefiles.com/packages/lf20_rwq6ciql.json'));
   }
 }
 
@@ -26,58 +28,14 @@ class ErrorWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.error_outline,
-            color: Colors.red,
-            size: 50,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(message)
+          Lottie.asset('assets/error.json', width: 150, height: 150),
+          Text(message,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold))
         ],
       ),
     );
   }
 }
-//
-// class UniversityListViewWidget extends StatefulWidget {
-//   const UniversityListViewWidget({Key? key}) : super(key: key);
-//
-//   @override
-//   State<UniversityListViewWidget> createState() => _UniversityListViewWidgetState();
-// }
-
-// class _UniversityListViewWidgetState extends State<UniversityListViewWidget> {
-//
-//   final List<University>? data;
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Placeholder();
-//   }
-// }
-
-// class UniversityListViewWidget extends StatelessWidget {
-//   final List<University>? data;
-//
-//   const UniversityListViewWidget({Key? key, required this.data})
-//       : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.builder(
-//         physics: const AlwaysScrollableScrollPhysics(),
-//         shrinkWrap: true,
-//         controller: ScrollController(),
-//         itemBuilder: (context, index) {
-//           return UniversityItem(
-//               nameUniversity: data![index].name,
-//               country: data![index].country,
-//               webSite: data![index].webPages.first);
-//         },
-//         itemCount: data!.length);
-// }
-// }
 
 class UniversityItem extends StatelessWidget {
   final String nameUniversity;
@@ -158,52 +116,6 @@ class UniversityItem extends StatelessWidget {
   }
 }
 
-// class UniversityScreen extends StatefulWidget {
-//   const UniversityScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   State<UniversityScreen> createState() => _UniversityScreenState();
-// }
-//
-// class _UniversityScreenState extends State<UniversityScreen> {
-//   TextEditingController editingController = TextEditingController();
-//
-//   late final List<University> universityList;
-//
-//   void searchCountry(String query) {
-//     final results = universityList
-//         .where((element) =>
-//             element.country.toLowerCase().contains(query.toLowerCase()))
-//         .toList();
-//
-//     setState(() => universityList = results);
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Column(children: [
-//         Padding(
-//             padding:
-//                 const EdgeInsets.only(top: 40, bottom: 10, left: 16, right: 16),
-//             child: TextField(
-//               onChanged: (value) {
-//                 searchCountry(value);
-//               },
-//               controller: editingController,
-//               decoration: const InputDecoration(
-//                   labelText: "Search",
-//                   hintText: "Search",
-//                   prefixIcon: Icon(Icons.search),
-//                   border: OutlineInputBorder(
-//                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
-//             )),
-//         const Expanded(child: UniversityStateWidget())
-//       ]),
-//     );
-//   }
-// }
-
 class UniversityStateWidget extends StatefulWidget {
   const UniversityStateWidget({Key? key}) : super(key: key);
 
@@ -270,23 +182,6 @@ class _UniversityStateWidgetState extends State<UniversityStateWidget> {
           // ),
         ))
       ]),
-    );
-  }
-}
-
-class SearchBar extends StatelessWidget {
-  const SearchBar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      onChanged: (value) {},
-      decoration: const InputDecoration(
-          labelText: "Search",
-          hintText: "Search",
-          prefixIcon: Icon(Icons.search),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(25.0)))),
     );
   }
 }

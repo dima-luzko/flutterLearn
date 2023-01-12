@@ -45,6 +45,7 @@ dependencies:
   dio: ^4.0.6
   pretty_dio_logger: ^1.2.0-beta-1
   equatable: ^2.0.5
+  lottie: ^2.2.0
 
 
 dev_dependencies:
@@ -72,6 +73,7 @@ flutter:
   uses-material-design: true
   assets:
     - images/
+    - assets/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
