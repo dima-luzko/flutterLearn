@@ -35,7 +35,7 @@ class _InheritedWidgetDemo extends State<InheritedWidgetDemo> {
   int _selectedIndex = 0;
 
   final List<Widget> _widgets = [
-    const UniversityScreenWidget(),
+    const UniversityStateWidget(),
     const CatalogScreen(),
     const Text(
       "Продажи",

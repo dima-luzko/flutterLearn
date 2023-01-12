@@ -40,25 +40,44 @@ class ErrorWidget extends StatelessWidget {
     );
   }
 }
+//
+// class UniversityListViewWidget extends StatefulWidget {
+//   const UniversityListViewWidget({Key? key}) : super(key: key);
+//
+//   @override
+//   State<UniversityListViewWidget> createState() => _UniversityListViewWidgetState();
+// }
 
-class UniversityListViewWidget extends StatelessWidget {
-  final List<University>? data;
+// class _UniversityListViewWidgetState extends State<UniversityListViewWidget> {
+//
+//   final List<University>? data;
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Placeholder();
+//   }
+// }
 
-  const UniversityListViewWidget({Key? key, required this.data})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        itemBuilder: (context, index) {
-          return UniversityItem(
-              nameUniversity: data![index].name,
-              country: data![index].country,
-              webSite: data![index].webPages.first);
-        },
-        itemCount: data!.length);
-  }
-}
+// class UniversityListViewWidget extends StatelessWidget {
+//   final List<University>? data;
+//
+//   const UniversityListViewWidget({Key? key, required this.data})
+//       : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//         physics: const AlwaysScrollableScrollPhysics(),
+//         shrinkWrap: true,
+//         controller: ScrollController(),
+//         itemBuilder: (context, index) {
+//           return UniversityItem(
+//               nameUniversity: data![index].name,
+//               country: data![index].country,
+//               webSite: data![index].webPages.first);
+//         },
+//         itemCount: data!.length);
+// }
+// }
 
 class UniversityItem extends StatelessWidget {
   final String nameUniversity;
@@ -139,15 +158,62 @@ class UniversityItem extends StatelessWidget {
   }
 }
 
-class UniversityScreenWidget extends StatefulWidget {
-  const UniversityScreenWidget({Key? key}) : super(key: key);
+// class UniversityScreen extends StatefulWidget {
+//   const UniversityScreen({Key? key}) : super(key: key);
+//
+//   @override
+//   State<UniversityScreen> createState() => _UniversityScreenState();
+// }
+//
+// class _UniversityScreenState extends State<UniversityScreen> {
+//   TextEditingController editingController = TextEditingController();
+//
+//   late final List<University> universityList;
+//
+//   void searchCountry(String query) {
+//     final results = universityList
+//         .where((element) =>
+//             element.country.toLowerCase().contains(query.toLowerCase()))
+//         .toList();
+//
+//     setState(() => universityList = results);
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Column(children: [
+//         Padding(
+//             padding:
+//                 const EdgeInsets.only(top: 40, bottom: 10, left: 16, right: 16),
+//             child: TextField(
+//               onChanged: (value) {
+//                 searchCountry(value);
+//               },
+//               controller: editingController,
+//               decoration: const InputDecoration(
+//                   labelText: "Search",
+//                   hintText: "Search",
+//                   prefixIcon: Icon(Icons.search),
+//                   border: OutlineInputBorder(
+//                       borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+//             )),
+//         const Expanded(child: UniversityStateWidget())
+//       ]),
+//     );
+//   }
+// }
+
+class UniversityStateWidget extends StatefulWidget {
+  const UniversityStateWidget({Key? key}) : super(key: key);
 
   @override
-  State<UniversityScreenWidget> createState() => _UniversityScreenWidgetState();
+  State<UniversityStateWidget> createState() => _UniversityStateWidgetState();
 }
 
-class _UniversityScreenWidgetState extends State<UniversityScreenWidget> {
+class _UniversityStateWidgetState extends State<UniversityStateWidget> {
   final UniversityBloc _universityBloc = UniversityBloc();
+  TextEditingController editingController = TextEditingController();
 
   @override
   void initState() {
@@ -157,30 +223,59 @@ class _UniversityScreenWidgetState extends State<UniversityScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => _universityBloc,
-      child: BlocBuilder<UniversityBloc, UniversityState>(
-        builder: (context, state) {
-          if (state is Loading) {
-            return const LoaderWidget();
-          } else if (state is Data) {
-            return UniversityListViewWidget(data: state.data);
-          } else if (state is Error) {
-            return ErrorWidget(message: state.message.toString());
-          } else {
-            return Container();
-          }
-        },
-      ),
-      // ),
+    return Center(
+      child: Column(children: [
+        Padding(
+            padding:
+                const EdgeInsets.only(top: 40, bottom: 10, left: 16, right: 16),
+            child: TextField(
+              onChanged: (value) {
+                _universityBloc.add(UniversityEvent.searchUniversity(value));
+              },
+              controller: editingController,
+              decoration: const InputDecoration(
+                  labelText: "Search",
+                  hintText: "Search",
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
+            )),
+        Expanded(
+            child: BlocProvider(
+          create: (_) => _universityBloc,
+          child: BlocBuilder<UniversityBloc, UniversityState>(
+            builder: (context, state) {
+              if (state is Loading) {
+                return const LoaderWidget();
+              } else if (state is Data) {
+                final universityList = state.data;
+                return ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    controller: ScrollController(),
+                    itemBuilder: (context, index) {
+                      return UniversityItem(
+                          nameUniversity: universityList[index].name,
+                          country: universityList[index].country,
+                          webSite: universityList[index].webPages.first);
+                    },
+                    itemCount: universityList.length);
+              } else if (state is Error) {
+                return ErrorWidget(message: state.message.toString());
+              } else {
+                return Container();
+              }
+            },
+          ),
+          // ),
+        ))
+      ]),
     );
   }
 }
 
 class SearchBar extends StatelessWidget {
   const SearchBar({Key? key}) : super(key: key);
-
-  //final Function filtered;
 
   @override
   Widget build(BuildContext context) {
