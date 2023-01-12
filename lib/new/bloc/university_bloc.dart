@@ -20,22 +20,18 @@ class UniversityBloc extends Bloc<UniversityEvent, UniversityState> {
         } else {
           emit(const UniversityState.error("Data isEmpty!"));
         }
-      } catch(error) {
+      } catch (error) {
         emit(const UniversityState.error(
             "Failed to fetch data. is your device online?"));
       }
     });
     on<LoadFilterUniversities>((event, emit) {
-     var results = listUniversity
-          .where((element) =>
-          element.country.toLowerCase().contains(event.country.toLowerCase()))
+      var results = listUniversity
+          .where((element) => element.country
+              .toLowerCase()
+              .contains(event.country.toLowerCase()))
           .toList();
       emit(UniversityState.data(results));
     });
   }
-
 }
-
-
-
-
