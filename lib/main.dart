@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'feature/registration/presentation/registrarion_screen.dart';
+import 'feature/registration/presentation/registration_screen.dart';
 
 
 void main() {
@@ -14,7 +14,7 @@ class Application extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
         title: 'Flutter Demo',
-        home: RegisterScreen()
+        home: RegistrationScreen()
     );
   }
 }

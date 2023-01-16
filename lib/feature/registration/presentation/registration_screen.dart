@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../../utils/validator.dart';
-import '../../main/presentation/main_screen.dart';
+import '../../main_screen.dart';
 import '../../sales/domain/entity/user_model.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({Key? key}) : super(key: key);
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   final _emailKey = GlobalKey<FormState>();
   final _passwordKey = GlobalKey<FormState>();
   final _phoneKey = GlobalKey<FormState>();

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../catalog/presentation/bloc/counter_cubit.dart';
-import '../../catalog/presentation/catalog_screen.dart';
-import '../../sales/domain/entity/user_model.dart';
-import '../../sales/presentation/sales_screen.dart';
-import '../../university/presentation/university_screen.dart';
+import 'catalog/presentation/bloc/counter_cubit.dart';
+import 'catalog/presentation/catalog_screen.dart';
+import 'sales/domain/entity/user_model.dart';
+import 'sales/presentation/sales_screen.dart';
+import 'university/presentation/university_screen.dart';
 
 class HomeWidget extends StatelessWidget {
   const HomeWidget({Key? key, required this.userData}) : super(key: key);
