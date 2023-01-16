@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../user_model.dart';
+import '../../domain/model/user_model.dart';
 
 class SalesScreen extends StatelessWidget {
   const SalesScreen({Key? key, required this.userModel}) : super(key: key);

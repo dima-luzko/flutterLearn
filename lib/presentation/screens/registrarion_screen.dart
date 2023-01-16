@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:practice_app/utils/validator.dart';
+import 'package:practice_app/core/validator.dart';
 
-import '../user_model.dart';
-import 'catalog.dart';
+import '../../domain/model/user_model.dart';
 import 'main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -34,12 +33,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       final User user = User(emailController.text, passwordController.text,
           maskFormatter.getMaskedText());
-
-      // Map<String, dynamic> userData = {
-      //   "Email": emailController.text,
-      //   "Password": passwordController.text,
-      //   "Phone": maskFormatter.getMaskedText()
-      // };
 
       print("validate, data: ${user}");
       Navigator.push(context,

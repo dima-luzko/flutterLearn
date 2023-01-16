@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
-import 'package:practice_app/new/bloc/university_bloc.dart';
+import 'package:practice_app/domain/repository/university_repository.dart';
+import 'package:practice_app/data/repository_impl/university_repository_impl.dart';
+import 'package:practice_app/domain/useCase/get_university_list.dart';
 
-import '../new/bloc/university_event.dart';
-import '../new/bloc/university_state.dart';
+import '../bloc/university/university_bloc.dart';
+import '../bloc/university/university_event.dart';
+import '../bloc/university/university_state.dart';
 
 class LoaderWidget extends StatelessWidget {
   const LoaderWidget({Key? key}) : super(key: key);
@@ -12,8 +15,6 @@ class LoaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Center(child: CircularProgressIndicator());
-    //   return Center(child: Lottie.network(
-    //       'https://assets1.lottiefiles.com/packages/lf20_rwq6ciql.json'));
   }
 }
 
@@ -116,20 +117,23 @@ class UniversityItem extends StatelessWidget {
   }
 }
 
-class UniversityStateWidget extends StatefulWidget {
-  const UniversityStateWidget({Key? key}) : super(key: key);
+class UniversityScreen extends StatefulWidget {
+  const UniversityScreen({Key? key}) : super(key: key);
 
   @override
-  State<UniversityStateWidget> createState() => _UniversityStateWidgetState();
+  State<UniversityScreen> createState() => _UniversityScreenState();
 }
 
-class _UniversityStateWidgetState extends State<UniversityStateWidget> {
-  final UniversityBloc _universityBloc = UniversityBloc();
+class _UniversityScreenState extends State<UniversityScreen> {
   TextEditingController editingController = TextEditingController();
+  late final UniversityRepository universityRepository;
+  late final UniversityBloc _universityBloc;
 
   @override
   void initState() {
-    _universityBloc.add(const UniversityEvent.loadUniversities());
+    universityRepository = UniversityRepositoryImpl();
+    _universityBloc = UniversityBloc(GetUniversityList(universityRepository))
+      ..add(const UniversityEvent.loadUniversities());
     super.initState();
   }
 

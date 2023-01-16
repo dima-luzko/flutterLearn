@@ -1,19 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:practice_app/new/bloc/university_event.dart';
-import 'package:practice_app/new/bloc/university_state.dart';
-import '../model/university_models.dart';
-import '../network/university_repository.dart';
+import 'package:practice_app/domain/useCase/get_university_list.dart';
+import 'package:practice_app/presentation/bloc/university/university_event.dart';
+import 'package:practice_app/presentation/bloc/university/university_state.dart';
+import '../../../data/model/university_models.dart';
 
 class UniversityBloc extends Bloc<UniversityEvent, UniversityState> {
-  final ApiRepository _apiRepository = ApiRepository();
-
+  final GetUniversityList getUniversityList;
   var listUniversity = <University>[];
 
-  UniversityBloc() : super(const UniversityState.loading()) {
+  UniversityBloc(this.getUniversityList) : super(const UniversityState.loading()) {
     on<LoadUniversities>((event, emit) async {
       emit(const UniversityState.loading());
       try {
-        final universitiesList = await _apiRepository.getListUniversity();
+        final universitiesList = await getUniversityList.getUniversityList();
         if (universitiesList!.isNotEmpty) {
           listUniversity = universitiesList;
           emit(UniversityState.data(universitiesList));

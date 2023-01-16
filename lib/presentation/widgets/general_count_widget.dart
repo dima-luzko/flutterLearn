@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../counter_cubit.dart';
+import '../bloc/catalog/counter_cubit.dart';
+
 
 class GeneralCount extends StatelessWidget {
   const GeneralCount({super.key});

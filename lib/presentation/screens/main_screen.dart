@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:practice_app/screen/sales_screen.dart';
-import 'package:practice_app/screen/university.dart';
-
-import '../counter_cubit.dart';
-import '../user_model.dart';
-import 'catalog.dart';
+import 'package:practice_app/presentation/screens/sales_screen.dart';
+import 'package:practice_app/presentation/screens/university_screen.dart';
+import '../bloc/catalog/counter_cubit.dart';
+import '../../domain/model/user_model.dart';
+import 'catalog_screen.dart';
 
 class HomeWidget extends StatelessWidget {
   const HomeWidget({Key? key, required this.userData}) : super(key: key);
@@ -43,7 +42,7 @@ class _BottomNavBarWidget extends State<BottomNavBarWidget> {
   Widget build(BuildContext context) {
 
     final List<Widget> screens = [
-      const UniversityStateWidget(),
+      const UniversityScreen(),
       const CatalogScreen(),
       SalesScreen(userModel: widget.user)
     ];

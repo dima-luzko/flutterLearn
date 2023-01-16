@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:practice_app/counter_cubit.dart';
-import '../constants/colors.dart';
+import 'package:practice_app/presentation/bloc/catalog/counter_cubit.dart';
+
+import '../../common/app_colors.dart';
 
 class ButtonSection extends StatefulWidget {
   const ButtonSection({super.key});

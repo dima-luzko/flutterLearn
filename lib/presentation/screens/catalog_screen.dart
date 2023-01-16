@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/colors.dart';
+import '../../common/app_colors.dart';
 import '../widgets/button_widgets.dart';
 import '../widgets/change_count_button_widget.dart';
 import '../widgets/general_count_widget.dart';

@@ -1,6 +1,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import '../model/university_models.dart';
+
+import '../../../data/model/university_models.dart';
 
 part 'university_state.freezed.dart';
 
