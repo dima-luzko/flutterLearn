@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:practice_app/internal/application.dart';
+
+import 'feature/registration/presentation/registrarion_screen.dart';
+
 
 void main() {
   runApp(const Application());
+}
+
+class Application extends StatelessWidget {
+  const Application({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+        title: 'Flutter Demo',
+        home: RegisterScreen()
+    );
+  }
 }
 
